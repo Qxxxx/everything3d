@@ -37,7 +37,7 @@ import MediaUploader from "./MediaUploader";
 import TransformedImage from "./TransformedImage";
 import { getCldImageUrl } from "next-cloudinary";
 import { addImage, updateImage } from "@/lib/actions/image.actions";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 
 export const formSchema = z.object({
@@ -65,7 +65,7 @@ const TransformationForm = ({
   const [transformationConfig, setTransformationConfig] = useState(config);
 
   const [isPending, startTransition] = useTransition();
-
+  const router = useRouter();
   const initialValues =
     data && action === "Update"
       ? {
@@ -143,6 +143,7 @@ const TransformationForm = ({
         }
       }
     }
+    setIsSubmitting(false);
   }
 
   const onSelectFieldHandler = (
@@ -175,8 +176,8 @@ const TransformationForm = ({
           [fieldName === "prompt" ? "prompt" : "to"]: value,
         },
       }));
-      return onChangeField(value);
-    }, 1000);
+    }, 1000)();
+    return onChangeField(value);
   };
 
   //TODO: Update credits code

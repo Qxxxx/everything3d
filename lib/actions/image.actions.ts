@@ -58,7 +58,7 @@ const populateUser = (query: any) =>
   query.populate({
     path: "author",
     model: User,
-    select: "_id firstName lastName",
+    select: "_id firstName lastName clerkId",
   });
 
 export async function getImageById(imageId: string) {
